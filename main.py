@@ -4,12 +4,14 @@ import imutils
 import numpy as np
 #face_cascade = cv2.CascadeClassifier('haarcascade_eye_tree_eyeglasses.xml')
 #face_cascade = cv2.CascadeClassifier('haarcascade_fullbody.xml')
-#face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+#face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 car_cascade = cv2.CascadeClassifier('cars.xml')
 # define a video capture object
 vid = cv2.VideoCapture("videos_cars.mp4")
-
+rojo = (0, 0, 255)
+azul = (255, 0, 0)
+verde = (0, 255, 0)
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
@@ -30,11 +32,11 @@ while (True):
 
     #Se dibura el buldingbox en los objetos detectados
     for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+        cv2.rectangle(frame, (x, y), (x + w, y + h), azul, 2)
     for (x, y, w, h) in regions:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+        cv2.rectangle(frame, (x, y), (x + w, y + h), rojo, 2)
     for (x, y, w, h) in cars:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        cv2.rectangle(frame, (x, y), (x + w, y + h), verde, 2)
     cv2.imshow('frame', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
