@@ -15,6 +15,14 @@ verde = (0, 255, 0)
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
+def rgb_to_temperature(x, y, w, h, color):
+    max = 255
+    for i in np.nditer(color):
+        if (i) < max:
+            max = i
+    print(max)
+    temperatura = 255/100.0 * (max)
+    return temperatura
 
 while (True):
     ret, frame = vid.read()
@@ -31,7 +39,7 @@ while (True):
     (regions, _) = hog.detectMultiScale(frame, winStride=(4, 4), padding=(4, 4), scale=1.05)
     
     #Transformacion de video a mapa de calor
-    frame = cv2.applyColorMap(frame, cv2.COLORMAP_HOT)
+    calor = cv2.applyColorMap(frame, cv2.COLORMAP_HOT)
 
     #Se dibura el buldingbox en los objetos detectados
     for (x, y, w, h) in faces:
@@ -39,8 +47,12 @@ while (True):
     for (x, y, w, h) in regions:
         cv2.rectangle(frame, (x, y), (x + w, y + h), rojo, 2)
     for (x, y, w, h) in cars:
+        cv2.putText(calor, 'La T es: '+ str(rgb_to_temperature(x,y, w,h, gray)), (x- 10, y- 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
         cv2.rectangle(frame, (x, y), (x + w, y + h), verde, 2)
     cv2.imshow('frame', frame)
+    
+    visual = np.concatenate((frame, calor), axis=1)
+    cv2.imshow('HORIZONTAL', visual)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
