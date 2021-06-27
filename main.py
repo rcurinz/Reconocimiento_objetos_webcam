@@ -29,6 +29,9 @@ while (True):
     faces = face_cascade.detectMultiScale(frame, 1.1, 4)
     cars = car_cascade.detectMultiScale(gray, 1.1, 1)
     (regions, _) = hog.detectMultiScale(frame, winStride=(4, 4), padding=(4, 4), scale=1.05)
+    
+    #Transformacion de video a mapa de calor
+    frame = cv2.applyColorMap(frame, cv2.COLORMAP_HOT)
 
     #Se dibura el buldingbox en los objetos detectados
     for (x, y, w, h) in faces:
